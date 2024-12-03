@@ -50,7 +50,7 @@ public class TextCompressor {
         codes4Letters[39] = code;
         // Representing common words with a 10 bit code
         HashMap<String, Integer> codes4Words = new HashMap<String, Integer>();
-
+        // RTBA
         BinaryStdOut.close();
     }
 
