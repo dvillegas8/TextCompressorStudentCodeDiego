@@ -21,6 +21,8 @@
  *  = 43.54% compression ratio!
  ******************************************************************************/
 
+import java.util.HashMap;
+
 /**
  *  The {@code TextCompressor} class provides static methods for compressing
  *  and expanding natural language through textfile input.
@@ -32,6 +34,22 @@ public class TextCompressor {
     private static void compress() {
 
         // TODO: Complete the compress() method
+        // Representing letters with a 6 bit code
+        int[] codes4Letters= new int['z' + 1];
+        int code = 0b000000;
+        // For loop which gives each letter a unique code
+        for(int letter = 'A'; letter < codes4Letters.length; letter++){
+            codes4Letters[letter] = code;
+            code += 0b000001;
+        }
+        // Code for space = Escape character
+        code += 0b000001;
+        codes4Letters[' '] = code;
+        // Apostrophe code
+        code += 0b000001;
+        codes4Letters[39] = code;
+        // Representing common words with a 10 bit code
+        HashMap<String, Integer> codes4Words = new HashMap<String, Integer>();
 
         BinaryStdOut.close();
     }
