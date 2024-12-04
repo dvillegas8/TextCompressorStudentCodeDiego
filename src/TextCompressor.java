@@ -84,7 +84,8 @@ public class TextCompressor {
         // Going over the file word by word and then letter
         // test
         // Test
-        while()
+        // test
+
         BinaryStdOut.close();
     }
 
