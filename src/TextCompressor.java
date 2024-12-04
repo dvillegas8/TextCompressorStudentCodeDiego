@@ -48,9 +48,40 @@ public class TextCompressor {
         // Apostrophe code
         code += 0b000001;
         codes4Letters[39] = code;
-        // Representing common words with a 10 bit code
+        // Representing the 15 most common words with a 10 bit code
         HashMap<String, Integer> codes4Words = new HashMap<String, Integer>();
-        // RTBA
+        // Starting from 63 so that it doesn't have the same value as the 6 bit codes
+        int wordCode = 0b0000111111;
+        codes4Words.put("the", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("be", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("to", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("of", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("and", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("in", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("that", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("have", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("it", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("for", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("not", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("with", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("you", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("he", wordCode);
+        wordCode += 0b0000000001;
+        codes4Words.put("as", wordCode);
+        while()
         BinaryStdOut.close();
     }
 
