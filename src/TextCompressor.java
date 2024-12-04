@@ -81,7 +81,7 @@ public class TextCompressor {
         codes4Words.put("he", wordCode);
         wordCode += 0b0000000001;
         codes4Words.put("as", wordCode);
-        // Going over the file.
+        // Going over the file word by word and then letter
         while()
         BinaryStdOut.close();
     }
