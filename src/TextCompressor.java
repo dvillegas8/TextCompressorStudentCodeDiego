@@ -81,15 +81,46 @@ public class TextCompressor {
         codes4Words.put("he", wordCode);
         wordCode += 0b0000000001;
         codes4Words.put("as", wordCode);
-        // Going over the file word by word and then letter
-        // test
-        // Test
-        // test
-
+        // Convert all chars into a single string
+        String s = BinaryStdIn.readString();
+        String word = "";
+        for(int i = 0; i < s.length(); i++){
+            // Continue adding letters until we reach the end
+            if(i != ' '){
+                word += i;
+            }
+            else{
+                // Check if in HashMap, if so, write the 10 bit code
+                if(codes4Words.containsKey(word)){
+                    // Write escape key to let the expand method know when to read 10 bits
+                    BinaryStdOut.write(codes4Letters[' '], 6);
+                    BinaryStdOut.write(codes4Words.get(word), 10);
+                    // Reset word
+                    word = "";
+                }
+                else{
+                    // Convert letters to 6 bit codes
+                    for(int j = 0; j < word.length(); j++){
+                        BinaryStdOut.write(codes4Letters[word.charAt(i)], 6);
+                    }
+                    // Reset word
+                    word = "";
+                }
+            }
+        }
         BinaryStdOut.close();
     }
 
     private static void expand() {
+        // Array where the code is the index and the value is the letter
+        char[] codeToLetter = new char[52];
+        int letter = 'A';
+        int i = 0;
+        while(i < codeToLetter.length){
+            codeToLetter[i] = (char) letter;
+            letter += 1;
+        }
+        codeToLetter[letter] = ' ';
 
         // TODO: Complete the expand() method
 
