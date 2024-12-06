@@ -27,13 +27,62 @@ import java.util.HashMap;
  *  The {@code TextCompressor} class provides static methods for compressing
  *  and expanding natural language through textfile input.
  *
- *  @author Zach Blick, YOUR NAME HERE
+ *  @author Zach Blick, Diego Villegas
  */
 public class TextCompressor {
 
     private static void compress() {
-
         // TODO: Complete the compress() method
+        // Read Data
+        String s = BinaryStdIn.readString();
+        int index = 0;
+        String prefix = "";
+        int customCode = 81;
+        // TST to keep all of our prefixes/strings
+        TST tst = new TST();
+        while (index < s.length()){
+            // Get char
+            prefix += s.charAt(index);
+            // Check if it not in the trie
+            if(tst.lookup(prefix) == -1){
+                // Check if it is single letter
+                if(prefix.length() == 1){
+                    char letter = prefix.charAt(0);
+                    tst.insert(prefix, letter);
+                }
+                // Don't need this
+                else{
+                    tst.insert(prefix, customCode);
+                     customCode++;
+                }
+            }
+            else{
+                // Write out the code associated with prefix as 12 bits
+                BinaryStdOut.write(tst.lookup(prefix), 12);
+            }
+            // If possible look ahead onto the next character
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
         // Representing letters with a 6 bit code
         int[] codes4Letters= new int['z' + 1];
         int code = 0b000000;
@@ -109,6 +158,8 @@ public class TextCompressor {
             }
         }
         BinaryStdOut.close();
+
+         */
     }
 
     private static void expand() {
