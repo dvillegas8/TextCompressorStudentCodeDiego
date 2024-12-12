@@ -30,12 +30,16 @@ import java.util.HashMap;
  *  @author Zach Blick, Diego Villegas
  */
 public class TextCompressor {
-
+    // A specific code assigned to signal end of file
+    final static int EOFCODE = 256;
+    // How many bits are codes are going to be
+    final static int LENGTHOFCODES = 12;
+    // Max possible codes is 4096 because we have 12 bit codes so 2^12 total codes
+    final static int MAXPOSSIBLECODES = 4096;
     private static void compress() {
         String s = BinaryStdIn.readString();
         int index = 0;
         String prefix = "";
-        int EOFCode = 256;
         int customCode = 257;
         // TST to keep all of our prefixes/strings
         TST tst = new TST();
@@ -46,28 +50,25 @@ public class TextCompressor {
             tst.insert(prefix, i);
             prefix = "";
         }
-        while (index < s.length()){
+        while(index < s.length()){
             prefix = tst.getLongestPrefix(s, index);
             // Write out the code assigned to the prefix
-            BinaryStdOut.write(tst.lookup(prefix), 12);
+            BinaryStdOut.write(tst.lookup(prefix), LENGTHOFCODES);
             // If possible look ahead onto the next char
-            if(index != s.length() - 1 && customCode < 4096){
+            if(index + prefix.length() < s.length() && customCode < MAXPOSSIBLECODES){
                 // Creates new prefix with new code by adding next char to prefix
-                tst.insert(prefix + s.charAt(index + 1), customCode);
+                tst.insert(prefix + s.charAt(index + prefix.length()), customCode);
                 customCode++;
             }
             index += prefix.length();
         }
         // Add EOF as 256 to signal the end for expand function
-        BinaryStdOut.write(EOFCode, 12);
+        BinaryStdOut.write(EOFCODE, LENGTHOFCODES);
         BinaryStdOut.close();
     }
 
     private static void expand() {
-        int EOFCode = 256;
-        // Max possible codes is 4096 because we have 12 bit codes so 2^12 codes
-        int maxPossibleCodes = 4096;
-        String[] codeToString = new String[maxPossibleCodes];
+        String[] codeToString = new String[MAXPOSSIBLECODES];
         // Add all 256 extended ascii characters to the map
         String symbol = "";
         for(int i = 0; i < 256; i++){
@@ -76,12 +77,12 @@ public class TextCompressor {
             symbol = "";
         }
         int customCode = 257;
-        int lookAheadCode = BinaryStdIn.readInt(12);
+        int lookAheadCode = BinaryStdIn.readInt(LENGTHOFCODES);
         int currentCode = 0;
-        while(lookAheadCode != EOFCode){
+        while(lookAheadCode != EOFCODE){
             currentCode = lookAheadCode;
             BinaryStdOut.write(codeToString[currentCode]);
-            lookAheadCode = BinaryStdIn.readInt(12);
+            lookAheadCode = BinaryStdIn.readInt(LENGTHOFCODES);
             // Edge case where we don't know what the next code is
             if(codeToString[lookAheadCode] == null){
                 // Mystery lookahead String is actually the current prefix + the first char prefix
@@ -89,8 +90,8 @@ public class TextCompressor {
             }
             else{
                 // Creates lookahead string and adds it to map
-                if(customCode < 4096){
-                    codeToString[customCode] = codeToString[currentCode] + codeToString[lookAheadCode];
+                if(customCode < MAXPOSSIBLECODES){
+                    codeToString[customCode] = codeToString[currentCode] + codeToString[lookAheadCode].charAt(0);
                 }
             }
             customCode++;
